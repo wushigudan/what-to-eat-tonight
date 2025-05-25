@@ -1,0 +1,212 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column; /* 让按钮和菜品列表垂直排列 */
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 20px;
+    box-sizing: border-box; /* 确保padding不会导致溢出 */
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 100%;
+    max-width: 800px; /* 限制最大宽度 */
+}
+
+h1 {
+    color: #ff6f61; /* 换一个更活泼的颜色 */
+    margin-bottom: 25px;
+    font-size: 2.5em;
+}
+
+#randomizeButton {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 25px; /* 更圆润的按钮 */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#randomizeButton:hover {
+    background-color: #e65a50;
+    transform: translateY(-2px); /* 轻微上浮效果 */
+}
+
+#randomizeButton:active {
+    transform: translateY(0px);
+}
+
+#dishesContainer {
+    margin-top: 20px;
+    text-align: center; /* 标题居中 */
+}
+
+#dishesContainer h2 {
+    color: #007bff; /* 蓝色标题 */
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+/* 移除或注释掉之前的 list-fade-out 和 list-slide-in 相关规则 */
+/*
+.list-fade-out {
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+}
+
+.list-slide-in {
+    animation: slideInFromBottom 0.5s ease-out forwards;
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+*/
+
+/* 新增：模拟滚动/抖动效果的动画 */
+.dishes-shuffling {
+    animation: shuffleAnimation 0.6s ease-in-out 2; /* 播放2次，总时长1.2秒 */
+}
+
+@keyframes shuffleAnimation {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    25% {
+        transform: translateY(-15px);
+        opacity: 0.7;
+    }
+    75% {
+        transform: translateY(15px);
+        opacity: 0.7;
+    }
+}
+
+/* 新增：最终菜品出现的动画 (可以简单点，比如轻微放大) */
+.dishes-reveal {
+    animation: revealAnimation 0.4s ease-out forwards;
+    opacity: 0; /* 初始不可见，由动画控制显示 */
+}
+
+@keyframes revealAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#dishList {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+#dishList li {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: calc(33.333% - 20px); 
+    min-width: 180px; 
+    min-height: 60px; /* 给一个最小高度，防止文字变化时跳动 */
+    box-sizing: border-box;
+    text-align: center;
+    display: flex; /* 用于垂直居中文本 */
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease;
+    overflow: hidden; /* 防止文字过长溢出 */
+    text-overflow: ellipsis; /* 文字过长显示省略号 */
+    white-space: nowrap; /* 防止文字换行 */
+}
+
+#dishList li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 新增：菜品滚动中的样式 (可选，可以加点视觉反馈) */
+.dish-scrolling {
+    /* 例如：可以改变背景色或添加轻微模糊 */
+    /* background-color: #f0f0f0; */
+    /* filter: blur(1px); */
+    /* 这里我们保持简单，主要靠JS快速改变文字 */
+    color: #aaa; /* 滚动时文字颜色变浅 */
+}
+
+/* 新增：最终选定菜品的动画 */
+.dish-selected-animation {
+    animation: selectedDishPop 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes selectedDishPop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 响应式调整 (保留之前的 @media 查询) */
+@media (max-width: 768px) {
+    #dishList li {
+        width: calc(50% - 15px);
+    }
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    #dishList li {
+        width: 100%;
+    }
+    #randomizeButton {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
