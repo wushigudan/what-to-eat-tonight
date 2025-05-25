@@ -1,15 +1,13 @@
-const dishes = [
-    "宫保鸡丁", "鱼香肉丝", "麻婆豆腐", "回锅肉", "水煮牛肉",
-    "酸菜鱼", "辣子鸡", "番茄炒蛋", "清蒸鲈鱼", "红烧排骨",
-    "可乐鸡翅", "糖醋里脊", "地三鲜", "蒜蓉西兰花", "手撕包菜",
-    "香菇滑鸡", "梅菜扣肉", "粉蒸肉", "剁椒鱼头", "小炒黄牛肉",
-    "干煸四季豆", "油焖大虾", "白灼菜心", "扬州炒饭", "牛肉面",
-    "炸酱面", "馄饨", "饺子", "披萨", "汉堡",
-    "意大利面", "寿司", "拉面", "咖喱鸡", "冬阴功汤",
-    "青椒肉丝", "木须肉", "锅包肉", "大盘鸡", "烤鸭",
-    "羊肉串", "麻辣香锅", "火锅", "酸辣土豆丝", "拍黄瓜",
-    "凉拌木耳", "皮蛋豆腐", "蒜泥白肉", "口水鸡", "夫妻肺片"
-];
+let dishes = [];
+
+// 加载菜品数据
+fetch('dishes.json')
+    .then(response => response.json())
+    .then(data => {
+        dishes = data.dishes;
+        initialDisplay(); // 加载数据后显示初始菜品
+    })
+    .catch(error => console.error('Error loading dishes:', error));
 
 const randomizeButton = document.getElementById('randomizeButton');
 const dishList = document.getElementById('dishList');
@@ -47,7 +45,7 @@ async function displayDishes() {
     const scrollInterval = 70;   // 每个菜品变化间隔 (毫秒)
     let elapsed = 0;
 
-    // 为每个菜品项添加一个“滚动中”的样式 (可选)
+    // 为每个菜品项添加一个"滚动中"的样式 (可选)
     listItems.forEach(item => item.classList.add('dish-scrolling'));
 
     const intervalId = setInterval(() => {
@@ -67,7 +65,7 @@ function finalizeSelection(listItems) {
     listItems.forEach((item, index) => {
         item.classList.remove('dish-scrolling'); // 移除滚动中样式
         item.textContent = finalDishes[index];
-        // 可以为最终选定的菜品添加一个“选定”的动画/样式
+        // 可以为最终选定的菜品添加一个"选定"的动画/样式
         item.classList.add('dish-selected-animation'); 
         // 动画结束后移除类，以便下次可以再次触发
         setTimeout(() => item.classList.remove('dish-selected-animation'), 500);
@@ -90,4 +88,3 @@ function initialDisplay() {
 }
 
 randomizeButton.addEventListener('click', displayDishes);
-initialDisplay();
